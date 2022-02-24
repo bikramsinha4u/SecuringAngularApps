@@ -14,7 +14,7 @@ namespace SecuringAngularApps.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Projects")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ProjectsController : Controller
     {
         private readonly ProjectDbContext _context;
@@ -22,6 +22,21 @@ namespace SecuringAngularApps.API.Controllers
         public ProjectsController(ProjectDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("AuthContext")]
+        [Authorize()]
+        public IActionResult GetAuthContext()
+        {
+            var userId = this.User.FindFirstValue(JwtClaimTypes.Subject);
+            var profile = _context.UserProfiles.Include("UserPermissions").FirstOrDefault(u => u.Id == userId);
+            if (profile == null) return NotFound();
+            var context = new AuthContext
+            {
+                UserProfile = profile,
+                Claims = User.Claims.Select(c => new SimpleClaim { Type = c.Type, Value = c.Value }).ToList()
+            };
+            return Ok(context);
         }
 
         // GET: api/Projects

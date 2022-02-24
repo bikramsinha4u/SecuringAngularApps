@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ManageProjectsComponent } from './manage-projects.component';
 import { ManagePermissionsComponent } from './manage-permissions.component';
+import { AdminRouteGuard } from '../core/admin-route-guard';
 
 const routes: Routes = [
-  { path: 'admin', component: ManageProjectsComponent },
-  { path: 'admin/manage-permissions/:projectId', component: ManagePermissionsComponent }
+  { path: 'admin', component: ManageProjectsComponent, canActivate: [AdminRouteGuard] },
+  { path: 'admin/manage-permissions/:projectId', component: ManagePermissionsComponent, canActivate: [AdminRouteGuard] }
 ];
 
 @NgModule({
