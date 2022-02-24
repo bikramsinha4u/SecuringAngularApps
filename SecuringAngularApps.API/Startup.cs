@@ -39,7 +39,7 @@ namespace SecuringAngularApps.API
                 });
             });
 
-            // For Auth0
+            // Based on dot net
             //services.AddAuthentication("Bearer")
             //    .AddJwtBearer("Bearer", options =>
             //    {
@@ -48,7 +48,7 @@ namespace SecuringAngularApps.API
             //        options.RequireHttpsMetadata = false;
             //    });
 
-            // For IdentityServer4
+            // Based on IdentityServer4 and filtering data based on claims
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                        .AddIdentityServerAuthentication(options =>
                        {
@@ -56,7 +56,7 @@ namespace SecuringAngularApps.API
                            options.ApiName = "projects-api";
                            options.RequireHttpsMetadata = false;
                        });
-            
+
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
